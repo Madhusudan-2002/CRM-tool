@@ -2,6 +2,9 @@ package com.crm.crmtool.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +23,7 @@ public class Contact {
     private Long id;
 
     @NotBlank(message = "First name is required")
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
     @Column(name = "last_name")
@@ -28,9 +31,10 @@ public class Contact {
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email format is invalid")
-    @Column(unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "phone")
     private String phone;
 
     @Column(name = "company_name")
@@ -39,20 +43,26 @@ public class Contact {
     @Column(name = "job_title")
     private String jobTitle;
 
+    @Column(name = "status")
     private String status;
 
+    // FK -> USER.id
     @Column(name = "owner_id")
     private Long ownerId;
 
+    // FK -> LEADS.id
     @Column(name = "lead_id")
     private Long leadId;
 
+    // FK -> USER.id
     @Column(name = "created_by")
     private Long createdBy;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
@@ -151,16 +161,8 @@ public class Contact {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
 

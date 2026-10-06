@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,14 +27,13 @@ public class Deal {
     @NotBlank(message = "Deal title is required")
     private String title;
 
+    // FK -> CONTACT.id
     @Column(name = "contact_id")
     private Long contactId;
 
+    // FK -> USER.id
     @Column(name = "owner_id")
     private Long ownerId;
-
-    @Column(name = "lead_id")
-    private Long leadId;
 
     @NotBlank(message = "Deal stage is required")
     private String stage;
@@ -51,12 +53,15 @@ public class Deal {
 
     private String description;
 
+    // FK -> USER.id
     @Column(name = "created_by")
     private Long createdBy;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
@@ -93,14 +98,6 @@ public class Deal {
 
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
-    }
-
-    public Long getLeadId() {
-        return leadId;
-    }
-
-    public void setLeadId(Long leadId) {
-        this.leadId = leadId;
     }
 
     public String getStage() {
@@ -171,16 +168,8 @@ public class Deal {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
 
